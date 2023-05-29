@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 
 export function Form() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem("contacts")) || [];
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,13 +20,6 @@ export function Form() {
     setContacts([...contacts, formData]);
     setFormData({ name: "", email: "", message: "" });
   }
-
-  useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem("contacts"));
-    if (savedContacts) {
-      setContacts([...savedContacts]);
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("contacts", JSON.stringify(contacts));
